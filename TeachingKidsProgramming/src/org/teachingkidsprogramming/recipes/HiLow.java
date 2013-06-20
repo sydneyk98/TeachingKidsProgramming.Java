@@ -1,33 +1,40 @@
 package org.teachingkidsprogramming.recipes;
 
+import java.util.Random;
+
 import org.teachingextensions.logo.utils.Sounds;
 import org.teachingextensions.windows.MessageBox;
-
-import com.spun.util.NumberUtils;
 
 public class HiLow
 {
   public static void main(String[] args)
   {
-    int correctNumber = NumberUtils.getRandomInt(1, 100);
+    int correctNumber = new Random().nextInt(100);
     for (int i = 1; i <= 8; i++)
     {
-      int guess = MessageBox.askForNumericalInput("Hi! Pick a number :)");
-      if (guess == correctNumber)
+      int numberOfGuesses = 8;
+      int chancesLeft = numberOfGuesses + 1 - i;
+      int guess = MessageBox.askForNumericalInput("Hi! Pick a number :) (You have " + chancesLeft
+          + " guesses left)");
+      if (guess < 1 || 100 < guess)
+      {
+        MessageBox.showMessage("Your number " + guess + " is not between 1 and 100");
+      }
+      else if (guess == correctNumber)
       {
         Sounds.playBeep();
         MessageBox.showMessage("You Won!");
         System.exit(0);
       }
-      else if (guess > correctNumber)
+      else if (correctNumber < guess)
       {
         MessageBox.showMessage("Your number is too high...");
       }
-      else if (guess < correctNumber)
+      else
       {
         MessageBox.showMessage("Your number is too low...");
       }
     }
-    MessageBox.showMessage("You lost the game! YOU SUCK");
+    MessageBox.showMessage("YOU SUCK! the correct answer was " + correctNumber);
   }
 }
